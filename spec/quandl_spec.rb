@@ -10,7 +10,7 @@ describe Quandl do
     end
 
     it "returns maximum drawdown" do
-      expect(result.maximum_drawdown).to eq -0.05608667941363933
+      expect(result.maximum_drawdown).to eq -0.07199777905370021
     end
 
     it "returns return" do

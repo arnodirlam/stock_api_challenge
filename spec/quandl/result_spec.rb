@@ -1,17 +1,17 @@
 describe Quandl::Result do
-  TestRow = Struct.new(:close)
+  TestRow = Struct.new(:close, :high, :low)
   let(:values) { [100, 90, 110, 105] }
-  let(:result) { Quandl::Result.new values.map{ |val| TestRow.new(val.to_f) } }
+  let(:result) { Quandl::Result.new values.map{ |val| TestRow.new(val.to_f, val.to_f, val.to_f - 1) } }
 
   describe "drawdowns" do
     it "are correct" do
-      expect(result.drawdowns.to_a).to eq [-0.1, -0.045454545454545456]
+      expect(result.drawdowns.to_a).to eq [-0.11, -0.05454545454545454]
     end
   end
 
   describe "maximum drawdown" do
     it "is correct" do
-      expect(result.maximum_drawdown).to eq -0.1
+      expect(result.maximum_drawdown).to eq -0.11
     end
   end
 

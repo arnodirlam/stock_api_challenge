@@ -27,16 +27,16 @@ module Quandl
         peak, trough = 0, nil
         yield_drawdown = -> { y << (trough - peak) / peak if trough }
 
-        prices.each do |price|
+        rows.each do |row|
           # mark new peak, report previous drawback
-          if price > peak
+          if row.high > peak
             yield_drawdown.call
-            peak, trough = price, nil
+            peak, trough = row.high, nil
           end
 
           # mark new trough
-          if trough.nil? or price < trough
-            trough = price
+          if trough.nil? or row.low < trough
+            trough = row.low
           end
         end
 
