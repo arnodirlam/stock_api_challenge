@@ -43,6 +43,16 @@ The deliverables are the code as well as a short description of what we need to 
 You need an **Quandl API key** to run the command-line tool and tests.
 Provide it via the `API_KEY` environment variable (see below).
 
-To get an example output, run `API_KEY=XYZ ruby stock.rb`.
+To get an example output, run `API_KEY=XYZ ruby stock.rb STOCK START-DATE-OR-RANGE`.
+
+- *STOCK* is a stock symbol (ticker).
+
+- *START-DATE-OR-RANGE* accepts a variety of formats and can be a single (start) date or date range.
+When providing a start date, the default end date is today.
+Examples:
+  - Natual language, such as `Jan 1 2015 - Jan 31 2015`
+  - SQL format (with or without dashes), such as `2017-02-15`
+  - UNIX timestamps (reduced to the date part), such as `1451602800`
+
 
 To run the tests: `API_KEY=XYZ rspec`.

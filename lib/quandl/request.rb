@@ -9,9 +9,35 @@ module Quandl
   class Request
     attr_reader :ticker, :date_range
 
-    def initialize(ticker, date_range)
+    def initialize(ticker, start_date_or_range)
       @ticker = ticker
-      @date_range = date_range
+
+      @date_range = case start_date_or_range
+        when /(.*?)(\.\.|\-)(.*)/
+          cast_date($1.strip)..cast_date($3.strip)
+        when Range
+          cast_date(start_date_or_range.begin)..cast_date(start_date_or_range.end)
+        else
+          cast_date(start_date_or_range)..Date.today
+      end
+    end
+
+    def cast_date(date_or_int)
+      case date_or_int
+        when Date then date_or_int
+        when 19000101..30000101
+          Date.new(date_or_int / 10_000, (date_or_int % 10_000) / 100, date_or_int % 100)
+        when Integer  # Unix timestamp
+          Time.at(date_or_int).to_date
+        when /\A(\d{4})(\d{2})(\d{2})\Z/
+          Date.new($1.to_i, $2.to_i, $3.to_i)
+        else
+          begin
+            Date.parse(date_or_int)
+          rescue ArgumentError => e
+            raise ArgumentError, "#{e}: #{date_or_int.inspect}"
+          end
+      end
     end
 
     # Issue the actual request, return `Quandl::Result` object
@@ -44,7 +70,7 @@ module Quandl
 
     # URL for this API request
     def url
-      "#{endpoint}?date.gte=#{date_range.begin}&date.lte=#{date_range.end}&ticker=#{ticker}&api_key=#{Quandl.api_key}"
+      "#{endpoint}?date.gte=#{date_range.begin.strftime("%Y%m%d")}&date.lte=#{date_range.end.strftime("%Y%m%d")}&ticker=#{ticker}&api_key=#{Quandl.api_key}"
     end
 
     # Protocol, domain and path to build the API request URL
