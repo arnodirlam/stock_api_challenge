@@ -1,4 +1,5 @@
 require_relative 'lib/quandl'
+require_relative 'lib/slack'
 
 ticker = ARGV.first
 date_start_or_range = ARGV[1..-1].join(' ')
@@ -15,3 +16,7 @@ result.drawdowns.lazy.take(3).each{ |drawdown| puts drawdown }
 puts ""
 puts "Maximum drawdown: #{result.maximum_drawdown}"
 puts "Return: #{result.return}"
+
+Slack.notify result,
+  "Return: #{result.return}",
+  "Maximum drawdown: #{result.maximum_drawdown}"

@@ -17,9 +17,13 @@ module Quandl
       last.close - first.close
     end
 
+    def percentage
+      to_f / first.close
+    end
+
     # Overrides casting this object to string (used by Ruby methods such as print)
     def to_s
-      "#{to_f} (#{first.close} on #{first.date.strftime("%d.%m.%y")} -> #{last.close} on #{last.date.strftime("%d.%m.%y")})"
+      "#{to_f} [#{"+" if to_f > 0}#{(percentage * 100).round(1)}%] (#{first.close} on #{first.date.strftime("%d.%m.%y")} -> #{last.close} on #{last.date.strftime("%d.%m.%y")})"
     end
   end
 end

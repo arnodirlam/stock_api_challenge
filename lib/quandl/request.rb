@@ -43,7 +43,7 @@ module Quandl
     # Issue the actual request, return `Quandl::Result` object
     def result
       if response_body
-        Quandl::Result.new rows
+        Quandl::Result.new rows, self
       end
     end
 

@@ -56,3 +56,15 @@ Examples:
 
 
 To run the tests: `API_KEY=XYZ rspec`.
+
+
+### Slack integration
+
+To receive stock info via Slack, first install an **incoming webhook** under [Apps & Integrations](https://askvira.slack.com/apps/manage/custom-integrations),
+copy the **Webhook URL**, and provide it to the CLI via the `SLACK_URL` env variable.
+
+Optionally, you can also provide the following config parameters:
+
+- `SLACK_CHANNEL` - the user to appear as author of the notification (default: `#random`)
+- `SLACK_USER` - the user to appear as author of the notification (default: `Stockbot`)
+- `SLACK_EMOJI` - the emoji icon appearing next to the author of the message (default: `:rocket:`)

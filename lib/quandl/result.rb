@@ -8,8 +8,14 @@ module Quandl
   class Result
     Row = Struct.new(:ticker, :date, :open, :high, :low, :close, :volume, :ex_dividend, :split_ratio, :adj_open, :adj_high, :adj_low, :adj_close, :adj_volume)
 
-    def initialize(rows)
+    def initialize(rows, request=nil)
       @rows = rows
+      @request = request
+    end
+
+    def to_s
+      return super unless @request
+      "Stock #{@request.ticker} between #{@request.date_range.begin.strftime("%d.%m.%y")} - #{@request.date_range.end.strftime("%d.%m.%y")}"
     end
 
     # Return lazy enumerator on the result rows
