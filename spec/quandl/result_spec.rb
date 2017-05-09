@@ -5,19 +5,19 @@ describe Quandl::Result do
 
   describe "drawdowns" do
     it "are correct" do
-      expect(result.drawdowns.to_a).to eq [-0.11, -0.05454545454545454]
+      expect(result.drawdowns.map(&:to_f)).to eq [-0.11, -0.05454545454545454]
     end
   end
 
   describe "maximum drawdown" do
     it "is correct" do
-      expect(result.maximum_drawdown).to eq -0.11
+      expect(result.maximum_drawdown.to_f).to eq -0.11
     end
   end
 
   describe "return" do
     it "is correct" do
-      expect(result.return).to eq 5.0
+      expect(result.return.to_f).to eq 5.0
     end
   end
 end

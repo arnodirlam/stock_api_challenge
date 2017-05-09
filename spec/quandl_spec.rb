@@ -10,11 +10,11 @@ describe Quandl do
     end
 
     it "returns maximum drawdown" do
-      expect(result.maximum_drawdown).to eq -0.07199777905370021
+      expect(result.maximum_drawdown.to_f).to eq -0.07199777905370021
     end
 
     it "returns return" do
-      expect(result.return).to eq -2.5400000000000063
+      expect(result.return.to_f).to eq -2.5400000000000063
     end
   end
 end

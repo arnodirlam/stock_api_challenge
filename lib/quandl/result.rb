@@ -1,5 +1,7 @@
 require 'csv'
 require_relative '../quandl'
+require_relative 'drawdown'
+require_relative 'return'
 
 module Quandl
   # Represents a result from the Quandl API
@@ -15,45 +17,40 @@ module Quandl
       @rows.lazy
     end
 
-    # Return lazy enumerator on the result prices
-    def prices
-      rows.map(&:close)
-    end
-
     # Returns enumerator of all the drawdowns
     # as negative floats (e.g. -0.1 for a drawdown of -10%)
     def drawdowns
       Enumerator.new do |y|
-        peak, trough = 0, nil
-        yield_drawdown = -> { y << (trough - peak) / peak if trough }
+        peak, trough = nil, nil
+        yield_drawdown = -> { y << Quandl::Drawdown.new(peak, trough) if trough }
 
         rows.each do |row|
-          # mark new peak, report previous drawback
-          if row.high > peak
+          # mark new peak, report previous drawdown
+          if peak.nil? or row.high > peak.high
             yield_drawdown.call
-            peak, trough = row.high, nil
+            peak, trough = row, nil
           end
 
           # mark new trough
-          if trough.nil? or row.low < trough
-            trough = row.low
+          if trough.nil? or row.low < trough.low
+            trough = row
           end
         end
 
-        # report final drawback
+        # report final drawdown
         yield_drawdown.call
       end
     end
 
     # Returns the maximum drawdown
     def maximum_drawdown
-      self.drawdowns.min
+      self.drawdowns.min_by(&:to_f)
     end
 
     # Returns the financial return, i.e. price difference between start date and end date
     def return
       # Enumerator objects don't have `#last`, so we use the following
-      prices.reverse_each.first - prices.first
+      Quandl::Return.new(rows.first, rows.reverse_each.first)
     end
   end
 end
