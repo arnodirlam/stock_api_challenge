@@ -8,7 +8,7 @@ API client for stock prices in a CLI
 
 Your task is to build a small application that can be interacted with through the command line.
 The app should take a stock symbol, e.g. "AAPL", and a start date as an input.
-It should calculate the return the stock has generated since the start date to today as well as the maximum drawdown
+It should calculate the **return** the stock has generated since the **start date to today** as well as the **maximum drawdown**
 of the stock within that time frame. As an input for financial data, you can use Quandl's Wiki [EOD Stock Prices](https://www.quandl.com/data/WIKI).
 It is up to you how you inform the user about this information but it should be more than a simple print output.
 You could, for example, send it through email, tweet it on Twitter or push it to StockTwits. Be creative!

@@ -1,4 +1,4 @@
-require 'curb'
+require 'byebug'
 require_relative 'quandl/request'
 require_relative 'quandl/result'
 
@@ -10,8 +10,7 @@ module Quandl
   # Retrieve stock info for the given ticker at the given date range
   def get_ticker(ticker, date_range)
     request = Quandl::Request.new(ticker, date_range)
-    response = request.perform
-    Quandl::Result.new(response.body_str)
+    request.result
   end
 
   # Read API key for requests from environment
